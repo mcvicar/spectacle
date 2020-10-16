@@ -1,26 +1,26 @@
 <template>
-  <div class="service">
-    <div v-if="isEditing">
+  <div class="service" :id="instance.id">
+    <div v-if="instance.isEditing">
       <h2>Edit service</h2>
       <div class="info">
         <p>
-        <label for="serviceName">Service Name</label>
-        <input v-model="serviceName" placeholder="Your service" id="serviceName" type="text">
+        <label :for="'serviceName-'+ instance.id">Service Name</label>
+        <input v-model="instance.serviceName" placeholder="Your service" :id="'serviceName-'+instance.id" type="text">
         </p>
         <p>
-        <label for="environment">Environment</label>
-        <input v-model="environment" placeholder="Your Environment" id="environment" type="text">
+        <label :for="'environment-'+instance.id">Environment</label>
+        <input v-model="instance.environment" placeholder="Your Environment" :id="'environment-'+instance.id" type="text">
         </p>
         <p>
           <label>
-          <toggle-button v-model="safeToFail"/> Safe to fail?
+          <toggle-button v-model="instance.safeToFail"/> Safe to fail?
           </label>
 
           <span class="helper">Is it ok if this service fails?</span>
         </p>
         <p>
-          <label for="errorBudget">Up time per month</label>
-          <select v-model="errorBudget" id="errorBudget">
+          <label :for="'errorBudget-'+instance.id">Up time per month</label>
+          <select v-model="instance.errorBudget" :id="'errorBudget-'+instance.id">
             <option value="7h 18m 18s">99%</option>
             <option value="43m 50s">99.9%</option>
             <option value="4m 23s">99.99%</option>
@@ -33,8 +33,8 @@
         </p>
 
         <p>
-          <label for="redRoutes.howMany">How many people use this service?</label>
-          <select v-model="redRoutes.howMany" id="redRoutes.howMany">
+          <label :for="'redRoutes.howMany-'+instance.id">How many people use this service?</label>
+          <select v-model="instance.redRoutes.howMany" :id="'redRoutes.howMany-'+instance.id">
             <option value="4">All of the people</option>
             <option value="3">Most of the people</option>
             <option value="2">Some of the people</option>
@@ -43,8 +43,8 @@
         </p>
 
         <p>
-          <label for="redRoutes.howOften">How often do people use this service?</label>
-          <select v-model="redRoutes.howOften" id="redRoutes.howOften">
+          <label :for="'redRoutes.howOften-'+instance.id">How often do people use this service?</label>
+          <select v-model="instance.redRoutes.howOften" :id="'redRoutes.howOften-'+instance.id">
             <option value="1">All of the time</option>
             <option value="2">Most of the time</option>
             <option value="3">Some of the time</option>
@@ -55,14 +55,14 @@
       </div>
       <div class="impacts">
         <p>
-        <label for="knownImpacts">Known impacts</label>
-        <textarea id="knownImpacts" v-model="knownImpacts"></textarea>
+        <label :for="'knownImpacts-'+instance.id">Known impacts</label>
+        <textarea :id="'knownImpacts-'+instance.id" v-model="instance.knownImpacts"></textarea>
         <span class="helper">These are other services that are impacted downstream</span>
         </p>
 
         <p>
-          <label for="deploymentFrequency">Deployment Frequency?</label>
-          <select v-model="deploymentFrequency" id="deploymentFrequency">
+          <label :for="'deploymentFrequency-'+instance.id">Deployment Frequency?</label>
+          <select v-model="instance.deploymentFrequency" :id="'deploymentFrequency-'+instance.id">
             <option value="Multiple Deploys Per Day">Multiple Deploys Per Day</option>
             <option value="Between once per hour and once per day">Between once per hour and once per day</option>
             <option value="Between once per week and once per month">Between once per week and once per month</option>
@@ -71,8 +71,8 @@
         </p>
 
         <p>
-          <label for="leadTime">Lead time for changes?</label>
-          <select v-model="leadTime" id="leadTime">
+          <label :for="'leadTime-'+instance.id">Lead time for changes?</label>
+          <select v-model="instance.leadTime" :id="'leadTime-'+instance.id">
             <option value="Less than one hour">Less than one hour</option>
             <option value="Between one day and one week">Between one day and one week</option>
             <option value="Between one week and once month">Between one week and once month</option>
@@ -82,8 +82,8 @@
         </p>
 
         <p>
-          <label for="meanTimeRestore">Mean time to restore service?</label>
-          <select v-model="meanTimeRestore" id="meanTimeRestore">
+          <label :for="'meanTimeRestore-'+instance.id">Mean time to restore service?</label>
+          <select v-model="instance.meanTimeRestore" :id="'meanTimeRestore-'+instance.id">
             <option value="Less than one hour">Less than one hour</option>
             <option value="Less than one day">Less than one day</option>
             <option value="Less than one week">Less than one week</option>
@@ -93,8 +93,8 @@
         </p>
 
         <p>
-          <label for="changeFailureRate">Change failure rate</label>
-          <select v-model="changeFailureRate" id="changeFailureRate">
+          <label :for="'changeFailureRate-'+instance.id">Change failure rate</label>
+          <select v-model="instance.changeFailureRate" :id="'changeFailureRate-'+instance.id">
             <option value="0-15%">0-15%</option>
             <option value="16-30%">16-30%</option>
             <option value="31-45%">31-45%</option>
@@ -104,7 +104,7 @@
         </p>
       </div>
       <div class="slo">
-        <div v-for="(slo, index) in slos" style="border-bottom:8px solid #78c0a8;">
+        <div v-for="(slo, index) in instance.slos" style="border-bottom:8px solid #78c0a8;">
           <p>
             <strong>Your SLO <span @click="removeSlo(index)" style="cursor:pointer">❌</span></strong>
             <input v-model="slo.slo.NFP" placeholder="Your SLO" type="text">
@@ -138,10 +138,10 @@
 
     </div>
     <div v-else>
-      <h2>{{ serviceName }} <span @click="editService" style="cursor:pointer">🔧</span></h2>
+      <h2>{{ instance.serviceName }} <span @click="editService" style="cursor:pointer">🔧</span></h2>
       <div class="info">
-        <p>Environment: <strong>{{ environment }}</strong> | <span v-if="safeToFail">Is safe to fail</span><span v-else><strong>Is not safe to fail</strong></span></p>
-        <p>Error Budget: <strong>{{ errorBudget }} per Month</strong></p>
+        <p>Environment: <strong>{{ instance.environment }}</strong> | <span v-if="instance.safeToFail">Is safe to fail</span><span v-else><strong>Is not safe to fail</strong></span></p>
+        <p>Error Budget: <strong>{{ instance.errorBudget }} per Month</strong></p>
         <p>Business Value</p>
         <svg width="325" height="325" xmlns="http://www.w3.org/2000/svg">
          <g>
@@ -195,18 +195,18 @@
       <div class="impacts">
         <h3>Known impacts</h3>
         <p>These are other services that are impacted downstream</p>
-        <p>{{ knownImpacts }}</p>
+        <p>{{ instance.knownImpacts }}</p>
 
         <h3>Deployment</h3>
         <dl>
           <dt>Deployment Frequency</dt>
-          <dd>{{ deploymentFrequency }}</dd>
+          <dd>{{ instance.deploymentFrequency }}</dd>
           <dt>Lead time for changes</dt>
-          <dd>{{ leadTime }}</dd>
+          <dd>{{ instance.leadTime }}</dd>
           <dt>Mean time to restore service</dt>
-          <dd>{{ meanTimeRestore }}</dd>
+          <dd>{{ instance.meanTimeRestore }}</dd>
           <dt>Change failure rate</dt>
-          <dd>{{ changeFailureRate }}%</dd>
+          <dd>{{ instance.changeFailureRate }}%</dd>
         </dl>
       </div>
       <div class="slo">
@@ -226,7 +226,7 @@
               <td><strong>Predicate</strong></td>
               <td><strong>Metric</strong></td>
             </tr>
-            <tr v-for="slo in slos">
+            <tr v-for="slo in instance.slos">
               <td>{{ slo.slo.NFP }}</td>
               <td class="predicate"> {{ slo.slo.Predicate }}</td>
               <td>{{ slo.slo.Metric }}</td>
@@ -243,130 +243,50 @@
 
 <script>
 import { ToggleButton } from 'vue-js-toggle-button';
+import uuidv4 from 'uuid/v4';
 
 export default {
   name: 'Services',
   components: {
     ToggleButton
   },
+  props: ['serviceInstance'],
   data () {
     return {
-      isEditing: false,
-      serviceName: "Service name",
-      environment: 'Production',
-      safeToFail: true,
-      errorBudget: '43m 50s',
-      knownImpacts: "Service A, Service B, Service C",
-      redRoutes: {
-        howMany: 3,
-        howOften: 2,
-      },
-      deploymentFrequency: "Multiple Deploys Per Day",
-      leadTime: "Less than one hour",
-      meanTimeRestore: "Less than one day",
-      changeFailureRate: "46-60%",
-      slos: [
-        {
-          slo: {
-            "NFP": "Availability",
-            "Predicate": ">",
-            "Metric": "99.9%"
-          },
-          qc: {
-            "NFP": "",
-            "Predicate": "",
-            "Metric": "",
-          }
-        },
-        {
-          slo: {
-            "NFP": "Response Time",
-            "Predicate": "<",
-            "Metric": "40ms"
-          },
-          qc: {
-            "NFP": "",
-            "Predicate": "",
-            "Metric": "",
-          }
-        },
-        {
-          slo: {
-            "NFP": "Throughput",
-            "Predicate": ">",
-            "Metric": "100Mbps"
-          },
-          qc: {
-            "NFP": "Network Bandwith",
-            "Predicate": ">",
-            "Metric": "100Mbps",
-          }
-        },
-        {
-          slo: {
-            "NFP": "Capacity",
-            "Predicate": ">",
-            "Metric": "999GB"
-          },
-          qc: {
-            "NFP": "",
-            "Predicate": "",
-            "Metric": "",
-          }
-        },
-        {
-          slo: {
-            "NFP": "Redundancy",
-            "Predicate": ">",
-            "Metric": "200%"
-          },
-          qc: {
-            "NFP": "",
-            "Predicate": "",
-            "Metric": "",
-          }
-        }
-      ],
-      newSlo: {
-        slo: {
-          "NFP": "",
-          "Predicate": "",
-          "Metric": ""
-        },
-        qc: {
-          "NFP": "",
-          "Predicate": "",
-          "Metric": "",
-        }
-      }
+      instance: this.serviceInstance
+    }
+  },
+  mounted() {
+    if(this.instance.id === null) {
+      this.instance.id = uuidv4();
+      console.log(this.instance.id);
     }
   },
   methods: {
     editService: function() {
-      this.isEditing = true;
+      this.instance.isEditing = true;
     },
     updateService: function() {
-      this.isEditing = false;
+      this.instance.isEditing = false;
     },
     setMatrixPostion: function(element) {
       // I see you rolling your eyes!
       switch (element) {
         case 'textX':
-          return (75 * this.redRoutes.howMany) - 20;
+          return (75 * this.instance.redRoutes.howMany) - 20;
           break;
         case 'textY':
-          return (75 * this.redRoutes.howOften) - 30;
+          return (75 * this.instance.redRoutes.howOften) - 30;
           break;
         default:
           return 0;
       }
     },
     addSlo: function() {
-      var slo = Object.assign(this.newSlo, {});
-      this.slos.push(slo);
+      this.instance.slos.push({...this.instance.newSlo});
     },
     removeSlo: function(evt) {
-      this.slos.splice(evt, 1);
+      this.instance.slos.splice(evt, 1);
     }
   },
   computed: {
