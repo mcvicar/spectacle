@@ -28,10 +28,10 @@ export default {
   },
   methods: {
   	addService: function(){
-    	this.serviceCount ++
+    	this.serviceCount ++;
     },
     removeService: function(){
-    	this.serviceCount --
+    	this.serviceCount --;
     }
   },
 };

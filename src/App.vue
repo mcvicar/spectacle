@@ -25,7 +25,7 @@
   font-size: 1rem;
   color: #2c3e50;
   margin: 0 auto;
-  max-width: 67.75rem;
+  max-width: 80rem;
 }
 #nav a {
   font-weight: bold;

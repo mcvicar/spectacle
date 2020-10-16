@@ -59,11 +59,54 @@
         <textarea id="knownImpacts" v-model="knownImpacts"></textarea>
         <span class="helper">These are other services that are impacted downstream</span>
         </p>
+
+        <p>
+          <label for="deploymentFrequency">Deployment Frequency?</label>
+          <select v-model="deploymentFrequency" id="deploymentFrequency">
+            <option value="Multiple Deploys Per Day">Multiple Deploys Per Day</option>
+            <option value="Between once per hour and once per day">Between once per hour and once per day</option>
+            <option value="Between once per week and once per month">Between once per week and once per month</option>
+          </select>
+          <span class="helper">How often do you deploy this service to this environment.</span>
+        </p>
+
+        <p>
+          <label for="leadTime">Lead time for changes?</label>
+          <select v-model="leadTime" id="leadTime">
+            <option value="Less than one hour">Less than one hour</option>
+            <option value="Between one day and one week">Between one day and one week</option>
+            <option value="Between one week and once month">Between one week and once month</option>
+            <option value="Between one month and 6 months">Between one month and 6 months</option>
+          </select>
+          <span class="helper">The time it takes to go from code committed to code successfully running in this environment</span>
+        </p>
+
+        <p>
+          <label for="meanTimeRestore">Mean time to restore service?</label>
+          <select v-model="meanTimeRestore" id="meanTimeRestore">
+            <option value="Less than one hour">Less than one hour</option>
+            <option value="Less than one day">Less than one day</option>
+            <option value="Less than one week">Less than one week</option>
+            <option value="Between one week and one month">Between one week and one month</option>
+          </select>
+          <span class="helper">The average time it takes to restore the service in this environment</span>
+        </p>
+
+        <p>
+          <label for="changeFailureRate">Change failure rate</label>
+          <select v-model="changeFailureRate" id="changeFailureRate">
+            <option value="0-15%">0-15%</option>
+            <option value="16-30%">16-30%</option>
+            <option value="31-45%">31-45%</option>
+            <option value="46-60%">46-60%</option>
+          </select>
+          <span class="helper">How often deployment failures occur in this environment that require immediate remedy (e.g. rollbacks)</span>
+        </p>
       </div>
       <div class="slo">
         <div v-for="(slo, index) in slos" style="border-bottom:8px solid #78c0a8;">
           <p>
-            <strong>Your SLO <span @click="removeSlo(index)" style="cursor:pointer">❌</a></strong>
+            <strong>Your SLO <span @click="removeSlo(index)" style="cursor:pointer">❌</span></strong>
             <input v-model="slo.slo.NFP" placeholder="Your SLO" type="text">
             <select v-model="slo.slo.Predicate">
               <option></option>
@@ -95,7 +138,7 @@
 
     </div>
     <div v-else>
-      <h2>{{ serviceName }} <span @click="editService" style="cursor:pointer">🔧</a></h2>
+      <h2>{{ serviceName }} <span @click="editService" style="cursor:pointer">🔧</span></h2>
       <div class="info">
         <p>Environment: <strong>{{ environment }}</strong> | <span v-if="safeToFail">Is safe to fail</span><span v-else><strong>Is not safe to fail</strong></span></p>
         <p>Error Budget: <strong>{{ errorBudget }} per Month</strong></p>
@@ -153,30 +196,42 @@
         <h3>Known impacts</h3>
         <p>These are other services that are impacted downstream</p>
         <p>{{ knownImpacts }}</p>
+
+        <h3>Deployment</h3>
+        <dl>
+          <dt>Deployment Frequency</dt>
+          <dd>{{ deploymentFrequency }}</dd>
+          <dt>Lead time for changes</dt>
+          <dd>{{ leadTime }}</dd>
+          <dt>Mean time to restore service</dt>
+          <dd>{{ meanTimeRestore }}</dd>
+          <dt>Change failure rate</dt>
+          <dd>{{ changeFailureRate }}%</dd>
+        </dl>
       </div>
       <div class="slo">
         <table>
           <thead>
             <tr>
-              <th colspan="3" style="background-color:#78C0A8">SLO</th>
-              <th colspan="3" style="background-color:#873F57; color: #fff">Qualifying Condition (QC)</th>
+              <th colspan="3" style="background-color:#78C0A8"> SLO </th>
+              <th colspan="3" style="background-color:#873F57; color: #fff"> Qualifying Condition (QC) </th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>NFP</td>
-              <td>Predicate</td>
-              <td>Metric</td>
-              <td>NFP</td>
-              <td>Predicate</td>
-              <td>Metric</td>
+              <td><strong>NFP</strong></td>
+              <td><strong>Predicate</strong></td>
+              <td><strong>Metric</strong></td>
+              <td><strong>NFP</strong></td>
+              <td><strong>Predicate</strong></td>
+              <td><strong>Metric</strong></td>
             </tr>
             <tr v-for="slo in slos">
               <td>{{ slo.slo.NFP }}</td>
-              <td> {{ slo.slo.Predicate }}</td>
+              <td class="predicate"> {{ slo.slo.Predicate }}</td>
               <td>{{ slo.slo.Metric }}</td>
               <td>{{ slo.qc.NFP }}</td>
-              <td> {{ slo.qc.Predicate }}</td>
+              <td class="predicate"> {{ slo.qc.Predicate }}</td>
               <td>{{ slo.qc.Metric }}</td>
             </tr>
           </tbody>
@@ -203,9 +258,13 @@ export default {
       errorBudget: '43m 50s',
       knownImpacts: "Service A, Service B, Service C",
       redRoutes: {
-        howMany: 1,
-        howOften: 4,
+        howMany: 3,
+        howOften: 2,
       },
+      deploymentFrequency: "Multiple Deploys Per Day",
+      leadTime: "Less than one hour",
+      meanTimeRestore: "Less than one day",
+      changeFailureRate: "46-60%",
       slos: [
         {
           slo: {
@@ -326,7 +385,6 @@ export default {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  max-width: 67.75rem;
 }
 .info, .impacts, .slo {
   font-size: 1rem;
@@ -352,5 +410,10 @@ tbody tr:nth-child(odd) {
 
 tbody tr:nth-child(even) {
   background-color: #ccc;
+}
+td.predicate
+{
+    text-align: center;
+    vertical-align: middle;
 }
 </style>
