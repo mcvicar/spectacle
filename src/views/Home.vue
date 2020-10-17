@@ -4,12 +4,11 @@
       <h1>Spectacle</h1>
       <p>A PoC based on the idea of capturing and displaying SLIs, SLOs, SLAs and bringing them closer to understanding the business value.</p>
     </section>
-    <div v-for="sInstance in serviceInstances">
-      <component :is="service" :serviceInstance="sInstance"></component>
+    <div v-for="instance in serviceInstances">
+      <component :is="service" :serviceInstance="instance" @removeInstance="removeService($event)"></component>
     </div>
     <div class="crud-bar">
-      <input type="button" @click="removeService" value="Remove">
-      <input type="button" @click="addService" value="Add">
+      <input type="button" @click="addService" value="Add another Service">
     </div>
   </div>
 </template>
@@ -24,7 +23,6 @@ export default {
   },
   data () {
     return {
-      serviceCount: 1,
       service: 'services',
       serviceInstances: [{
         id: uuidv4(),
@@ -219,8 +217,12 @@ export default {
   	addService: function(){
       this.serviceInstances.push({...this.newService});
     },
-    removeService: function(evt) {
-      this.serviceInstances.splice(evt, 1);
+    removeService: function(instance) {
+      this.serviceInstances.filter( (inst, index, arr) => {
+        if(instance == inst.id) {
+          arr.splice(index, 1);
+        }
+      })
     }
   },
   watch: {

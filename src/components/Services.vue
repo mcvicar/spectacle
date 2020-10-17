@@ -133,7 +133,7 @@
       </div>
 
       <div class="crud-bar" style="clear:both">
-        <input type="button" @click="updateService" value="Done">
+        <input type="button" class="remove" @click="removeService" value="Remove"> <input type="button" @click="updateService" value="Done">
       </div>
 
     </div>
@@ -268,6 +268,10 @@ export default {
     },
     updateService: function() {
       this.instance.isEditing = false;
+    },
+    removeService: function(){
+      this.instance.isEditing = false;
+      this.$emit('removeInstance', this.instance.id)
     },
     setMatrixPostion: function(element) {
       // I see you rolling your eyes!

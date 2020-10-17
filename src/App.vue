@@ -112,6 +112,13 @@ input[type="button"]:hover{
   background: #2EBC99;
 }
 
+input[type="submit"].remove,
+input[type="button"].remove{
+  background-color:#873F57;
+  color: #fff;
+  border-bottom: 2px solid #502634;
+}
+
 footer {
   font-size:0.7rem;
   color:#999;
