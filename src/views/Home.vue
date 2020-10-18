@@ -5,7 +5,7 @@
       <p>A PoC based on the idea of capturing and displaying SLIs, SLOs, SLAs and bringing them closer to understanding the business value.</p>
     </section>
     <div v-for="instance in serviceInstances">
-      <component :is="service" :serviceInstance="instance" @removeInstance="removeService($event)"></component>
+      <component :is="service" :serviceInstance="instance" :servicesList="serviceInstances" @removeInstance="removeService($event)"></component>
     </div>
     <div class="crud-bar">
       <input type="button" @click="addService" value="Add another Service">
@@ -31,7 +31,7 @@ export default {
         environment: 'Production',
         safeToFail: true,
         errorBudget: '43m 50s',
-        knownImpacts: "Service A, Service B, Service C",
+        knownImpacts: [],
         redRoutes: {
           howMany: 3,
           howOften: 2,
@@ -122,7 +122,7 @@ export default {
         environment: 'Production',
         safeToFail: true,
         errorBudget: '43m 50s',
-        knownImpacts: "Service A, Service B, Service C",
+        knownImpacts: [],
         redRoutes: {
           howMany: 3,
           howOften: 2,

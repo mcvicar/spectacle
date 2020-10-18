@@ -54,11 +54,12 @@
 
       </div>
       <div class="impacts">
-        <p>
-        <label :for="'knownImpacts-'+instance.id">Known impacts</label>
-        <textarea :id="'knownImpacts-'+instance.id" v-model="instance.knownImpacts"></textarea>
-        <span class="helper">These are other services that are impacted downstream</span>
+
+        <p v-for="service in serviceList">
+          <input type="checkbox" :id="'knownImpacts'+instance.id+service.id" :value="service.id" v-model="instance.knownImpacts">
+  <label :for="'knownImpacts'+instance.id+service.id">{{ service.serviceName }}</label>
         </p>
+        <p><span class="helper">These are other services that are impacted downstream</span></p>
 
         <p>
           <label :for="'deploymentFrequency-'+instance.id">Deployment Frequency?</label>
@@ -195,7 +196,11 @@
       <div class="impacts">
         <h3>Known impacts</h3>
         <p>These are other services that are impacted downstream</p>
-        <p>{{ instance.knownImpacts }}</p>
+
+        <ul>
+          <li v-for="impact in instance.knownImpacts">
+            <router-link :to="{'hash':'#'+impact}" @click.native="scrollToService('#'+impact)">{{ getServiceByRef(impact) }}</router-link></li>
+        </ul>
 
         <h3>Deployment</h3>
         <dl>
@@ -250,16 +255,16 @@ export default {
   components: {
     ToggleButton
   },
-  props: ['serviceInstance'],
+  props: ['serviceInstance', 'servicesList'],
   data () {
     return {
-      instance: this.serviceInstance
+      instance: this.serviceInstance,
+      serviceList: this.servicesList
     }
   },
   mounted() {
     if(this.instance.id === null) {
       this.instance.id = uuidv4();
-      console.log(this.instance.id);
     }
   },
   methods: {
@@ -272,6 +277,15 @@ export default {
     removeService: function(){
       this.instance.isEditing = false;
       this.$emit('removeInstance', this.instance.id)
+    },
+    getServiceByRef(id) {
+      var searchService = this.serviceList.filter((service) => id == service.id);
+      // this feels hacky..
+      return searchService[0].serviceName;
+    },
+    scrollToService: function(hashbang)
+    {
+      location.hash = hashbang;
     },
     setMatrixPostion: function(element) {
       // I see you rolling your eyes!
