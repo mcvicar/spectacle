@@ -319,6 +319,18 @@ export default {
 </script>
 
 <style>
+@media only screen and (min-width: 768px) {
+  .info, .impacts, .slo {
+    width:30%;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .info, .impacts, .slo {
+    width:100%;
+  }
+}
+
 .service{
   display: flex;
   flex-direction: column;
@@ -326,7 +338,6 @@ export default {
 }
 .info, .impacts, .slo {
   font-size: 1rem;
-  width:30%;
   margin:10px;
   color: #555555;
   position: relative;
@@ -337,6 +348,7 @@ export default {
   flex-basis: 100%;
   flex: 1;
 }
+
 .helper {
   display:block;
   font-size: 0.8rem;
