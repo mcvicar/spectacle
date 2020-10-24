@@ -4,11 +4,18 @@
 
     <p>Spectable is a <abbr title="Proof of Concept">PoC</abbr> based on the idea of capturing and displaying <abbr title="Service Level Indicator">SLIs</abbr>, <abbr title="Service Level Objective">SLOs</abbr>, <abbr title="Service Level Agreement">SLAs</abbr> and bringing them closer to the business value.</p>
 
-    <p>It's based on mashing together two ideas; <a href="https://blog.acolyer.org/2019/07/05/automating-chaos-experiments-in-production/">Netflix's Monocle dashboard</a>, (except it isn't automated to any actual chaos engineering tests) and the product management idea of "<a href="https://web.archive.org/web/20160420201131/http://www.userfocus.co.uk/articles/prioritising-functions.html">Red Routes</a>".</p>
+    <p>It's based on mashing together <strike>two</strike> three ideas; </p>
+    <ul>
+      <li><a href="https://blog.acolyer.org/2019/07/05/automating-chaos-experiments-in-production/">Netflix's Monocle dashboard</a>, (except it isn't automated to any actual chaos engineering tests), </li>
+      <li>The metrics from <a href="https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339">Accelerate: The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations</a></li>
+      <li>and the product management idea of "<a href="https://web.archive.org/web/20160420201131/http://www.userfocus.co.uk/articles/prioritising-functions.html">Red Routes</a>".</li>
+    </ul>
 
     <p>Norah Jones mentions in her great talk <a href="https://www.infoq.com/presentations/rethinking-chaos-engineering/">Rethinking Chaos Engineering</a>, the value of the dashboard was in giving teams visablity to their own assumptions, downstream impacts, etc. I thought that was worth exploring by adding in a layer of business value to it (e.g. how many users rely on this service and how often).</p>
 
     <p>After I had done that, I had another idea - why not add the metrics from <a href="https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339">Accelerate: The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations</a>. In an ideal world you could get your Repo + CI/CD pipeline to calculate these results. But hey, ¯\_(ツ)_/¯ PoC.</p>
+
+    <p>A friend, Ben, suggested hooking it up to monitoring and alerting systems. We'll see Ben, we'll see.</p>
 
     <h3><abbr title="Service Level Indicator">SLIs</abbr>, <abbr title="Service Level Objective">SLOs</abbr>, <abbr title="Service Level Agreement">SLAs</abbr>? I'm sorry a what?</h3>
     <p>When building a service, we have a should define some baseline agreements as to the service’s expected uptime and performance based on their business value.</p>
