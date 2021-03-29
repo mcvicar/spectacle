@@ -4,6 +4,10 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </header>
+    <div id="banner">
+      <a href="https://www.theslate.co">Looking for a fully hosted version service catalogue to turn your team's tribal knowledge into organisational context?
+      <br> Checkout The Slate </a>
+    </div>
     <section>
     <router-view/>
     </section>
@@ -33,6 +37,18 @@
 }
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+#banner {
+  margin-top:10px;
+  background-color: #061b26;
+  color: #fff;
+  padding: 20px;
+}
+#banner a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 2rem;
+  display: block;
 }
 h1 {
   font-size: 2rem;

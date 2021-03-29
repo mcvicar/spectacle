@@ -2,6 +2,8 @@
 
 Spectable is a PoC based on the idea of capturing and displaying SLIs, SLOs, SLAs and bringing them closer to the business value.
 
+**<a href="https://www.theslate.co">If you are looking for a fully hosted version service catalogue to turn your team's tribal knowledge into organisational context, checkout The Slate</a>**
+
 It's based on mashing together ~~two~~ three ideas;
 * [Netflix's Monocle dashboard](https://blog.acolyer.org/2019/07/05/automating-chaos-experiments-in-production/), (except it isn't automated to any actual chaos engineering tests),
 * The metrics from <a href="https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339">Accelerate: The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations</a>,
